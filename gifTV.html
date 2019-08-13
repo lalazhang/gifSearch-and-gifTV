@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Giphy Search Engine</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<div class="container container-padding50">
+			
+			<input type="text" class="js-userinput container-textinput" value="Start to search from here" />
+		</div>
+		<div class="container container-padding50 js-container">
+
+		</div>
+		<script>
+			document.querySelector(".js-userinput").addEventListener('keyup',function(e){
+	        //console.log(e);
+	
+	        var input = document.querySelector("input").value;
+	         /*how to clean the search history  container.innerHTML="input";*/
+             /*console.log(input);*/
+
+                 // if the key ENTER is pressed...
+                   if (e.which===13){
+           	           inputToTV(input);
+                     }
+    
+
+             });
+			/*show the gif*/
+			function inputToTV(a){
+			var url="http://api.giphy.com/v1/gifs/search?q="+a+"&api_key=dc6zaTOxFJmzC";
+			var GiphyAJAXCall= new XMLHttpRequest();
+            GiphyAJAXCall.open('GET',url);
+            GiphyAJAXCall.send();
+            var container=document.querySelector(".js-container");
+
+
+         
+            GiphyAJAXCall.addEventListener('load',function(e){
+            	 var data=e.target.response;
+            	 var response=JSON.parse(data);
+            	 /*console.log(response);*/
+            	 var j=0;
+            	 for (var i=0;i<25;i++)
+            	 	setTimeout(function(){
+            	 		
+            	 		var imageUrl=response.data[j];
+            	        /*console.log(imageUrl);*/
+            	        var image=imageUrl.images.fixed_height.url;
+            	        
+            	        container.innerHTML = "<img src=\""+image+"\" class=\"container-image\">";
+            	        j++;
+            	       
+            	 	},5000*i)
+            	 
+
+
+            })
+        }
+
+
+		</script>
+	</body>
+</html>
